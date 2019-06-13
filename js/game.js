@@ -1,5 +1,5 @@
 var config, options, game;
-var spawner;
+var spawner, enemy_sprite;
 
 window.onload = () => {
     config ={
@@ -39,7 +39,10 @@ class Main extends Phaser.Scene {
         this.load.image("player", "assets/player.png");
         this.load.image("shot", "assets/shot.png");
         this.load.image("enemy_1", "assets/enemy_1.png");
+        this.load.image("enemy_2", "assets/enemy_2.png");
+        this.load.image("enemy_3", "assets/enemy_3.png");
         this.load.image("enemy_shot", "assets/enemy_shot.png");
+        enemy_sprite = ["enemy_1","enemy_2","enemy_3"]
     }
 
     create(){
@@ -62,7 +65,7 @@ class Main extends Phaser.Scene {
                     this,
                     Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
                     0,
-                    "enemy_1"
+                    enemy_sprite[Phaser.Math.Between(0,2)]
                 );
                 if(enemy!==null){
                     enemy.setAngle(180).setDepth(5);
@@ -88,10 +91,24 @@ class Main extends Phaser.Scene {
         ////enemiesLaser=>Player
         this.physics.add.overlap(this.enemiesLasers, this.player, (enemiesLasers, player)=> {
             if(!player.getData('isDead') &&
-                player.getData('isHitable') === true){
+                player.getData('isHitable')){
                     player.Hit();
                     player.onDestroy();
                     enemiesLasers.destroy();
+                }
+        });
+        ////enemies=>player
+        this.physics.add.overlap(this.enemies, this.player, (enemy, player)=>{
+            if(!player.getData('isDead') &&
+                player.getData('isHitable')){
+                    player.Hit();
+                    player.onDestroy();
+                    if(enemy) {
+                        if(enemy.onDestroy !== undefined) {
+                            enemy.onDestroy();
+                        }
+                        enemy.explode(true);
+                    }
                 }
         })
 

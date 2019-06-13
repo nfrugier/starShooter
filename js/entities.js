@@ -133,13 +133,13 @@ class GunShip extends Entity {
         this.shootTimer = this.scene.time.addEvent({
             delay : 1000,
             callback : () => {
-                let laser = new EnemyLaser(
+                if(this!==null){let laser = new EnemyLaser(
                     this.scene,
                     this.x,
                     this.y,
                 );
                 laser.setAngle(90).setDepth(4);
-                this.scene.enemiesLasers.add(laser);
+                this.scene.enemiesLasers.add(laser);}
             },
             callbackScope : this,
             loop : true,
