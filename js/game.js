@@ -1,5 +1,6 @@
 var config, options, game;
 var spawner, enemy_sprite;
+var score = 0;
 
 window.onload = () => {
     config ={
@@ -46,8 +47,11 @@ class Main extends Phaser.Scene {
     }
 
     create(){
+        //UI
         this.bg = this.add.tileSprite(game.config.width/2,game.config.height/2,400,750,"bg").setOrigin(0.5).setDepth(1);
+        this.scoretxt = this.add.text(20,20,'Score : ' + score,{color : 'yellow', fontFamily : 'Helvetica'}).setOrigin(0).setDepth(20);
 
+        //player
         this.player = new Player(this, game.config.width/2, game.config.height * 0.9, "player").setDepth(5);
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -61,16 +65,24 @@ class Main extends Phaser.Scene {
             delay : 500,
             callback : () => {
                 var enemy = null;
-                enemy = new GunShip(
-                    this,
-                    Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
-                    0,
-                    enemy_sprite[Phaser.Math.Between(0,2)]
-                );
+                if(Phaser.Math.Between(0, 10) >= 3){
+                    enemy = new GunShip(
+                        this,
+                        Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
+                        0,
+                        enemy_sprite[Phaser.Math.Between(0,1)]
+                    );
+                }else if(Phaser.Math.Between(0, 10) >= 5){
+                    enemy = new Chaser(
+                        this,
+                        Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
+                        0,
+                        enemy_sprite[2]
+                    );
+                }
                 if(enemy!==null){
                     enemy.setAngle(180).setDepth(5);
                     this.enemies.add(enemy);
-                    console.log('new enemy arrives');
                 }
             },
             callbackScope : this,
@@ -86,6 +98,7 @@ class Main extends Phaser.Scene {
                 }
                 enemy.explode(true);
                 playerLaser.destroy();
+                score += 50;
             }
         });
         ////enemiesLaser=>Player
@@ -93,7 +106,7 @@ class Main extends Phaser.Scene {
             if(!player.getData('isDead') &&
                 player.getData('isHitable')){
                     player.Hit();
-                    player.onDestroy();
+                    score -= 10;
                     enemiesLasers.destroy();
                 }
         });
@@ -102,7 +115,7 @@ class Main extends Phaser.Scene {
             if(!player.getData('isDead') &&
                 player.getData('isHitable')){
                     player.Hit();
-                    player.onDestroy();
+                    score -= 15;
                     if(enemy) {
                         if(enemy.onDestroy !== undefined) {
                             enemy.onDestroy();
@@ -110,13 +123,18 @@ class Main extends Phaser.Scene {
                         enemy.explode(true);
                     }
                 }
+        });
+        ////playerlaser=>enemylaser
+        this.physics.add.overlap(this.playerLasers, this.enemiesLasers, (playerLaser, enemyLaser) => {
+            playerLaser.destroy();
+            enemyLaser.destroy();
         })
 
     }
 
     update(){
         this.bg.tilePositionY -= 10;
-        console.log(this.player.getData('isHitable'));
+        this.scoretxt.setText('Score : '+score);
 
         //events on enemies
         for (let i = 0; i < this.enemies.getChildren().length ; i++){
@@ -147,6 +165,13 @@ class Main extends Phaser.Scene {
             } else if(this.cursors.left.isDown){
                 this.player.moveLeft();
             }
+
+            if(this.cursors.up.isDown){
+                this.player.moveUp();
+            } else if (this.cursors.down.isDown){
+                this.player.moveDown();
+            }
+
             //shooting
             if (this.cursors.space.isDown) {
                 this.player.setData("isShooting", true);

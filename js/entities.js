@@ -9,7 +9,6 @@ class Entity extends Phaser.GameObjects.Sprite {
     }
 
     onDestroy() {
-        console.log("buarg")
        // this.setData('isDead', true);
     }
 
@@ -59,38 +58,47 @@ class Player extends Entity {
         this.body.velocity.x = this.getData('speed')
     }
 
+    moveUp(){
+        this.body.velocity.y = -this.getData('speed');
+    }
+    moveDown(){
+        this.body.velocity.y = this.getData('speed');
+    }
+
     onDestroy(){
-        console.log("t'es mort gros nul")
         super.onDestroy();
         //stuff
     }
 
     Hit(){
-        this.scene.tweens.add({
-            targets : this,
-            delay : 0,
-            alpha : 0,
-            duration : 200,
-            repeat : 5,
-            yoyo : true,
-            onYoyo : () => {
-                this.setData('isHitable', false);
-            },
-            onYoyoScope : this,
-            onComplete : () => {
-                if(this.alpha != 1){
-                    this.setAlpha(1);
-                }
-                this.setData('isHitable', true);
-            },
-            onCompleteScope : this,
-        });
+        if(this.getData('isHitable') === true) {
+            this.scene.tweens.add({
+                targets : this,
+                delay : 0,
+                alpha : 0,
+                duration : 200,
+                repeat : 5,
+                yoyo : true,
+                onYoyo : () => {
+                    this.setData('isHitable', false);
+                },
+                onYoyoScope : this,
+                onComplete : () => {
+                    if(this.alpha != 1){
+                        this.setAlpha(1);
+                    }
+                    this.setData('isHitable', true);
+                },
+                onCompleteScope : this,
+            });
+        }
     }
 
     update() {
         this.body.setVelocity(0,0);
 
         this.x = Phaser.Math.Clamp(this.x, this.displayWidth/2, this.scene.game.config.width-this.width/2);
+        this.y = Phaser.Math.Clamp(this.y, this.displayHeight/2, this.scene.game.config.height-this.height/2);
 
         if(this.getData('isShooting')) {
             if(this.getData('timerShootTick') < this.getData('timerShootDelay')) {
@@ -115,7 +123,7 @@ class PlayerLaser extends Entity {
 class EnemyLaser extends Entity {
     constructor(scene, x, y) {
         super(scene, x, y, "enemy_shot");
-        this.body.velocity.y = 750;
+        this.body.velocity.y = Phaser.Math.Between(500,750);
     }
 }
 
@@ -131,15 +139,15 @@ class GunShip extends Entity {
         this.body.velocity.y = 300;
 
         this.shootTimer = this.scene.time.addEvent({
-            delay : 1000,
+            delay : Phaser.Math.Between(200, 2000),
             callback : () => {
-                if(this!==null){let laser = new EnemyLaser(
+                let laser = new EnemyLaser(
                     this.scene,
                     this.x,
                     this.y,
                 );
                 laser.setAngle(90).setDepth(4);
-                this.scene.enemiesLasers.add(laser);}
+                this.scene.enemiesLasers.add(laser);
             },
             callbackScope : this,
             loop : true,
@@ -152,5 +160,25 @@ class GunShip extends Entity {
                 this.shootTimer.remove(false)
             }
         }
+    }
+}
+
+class Chaser extends Entity {
+    constructor(scene, x, y, texture) {
+        super(scene, x, y, texture, "Chaser");
+        this.body.velocity.y = 150;
+    }
+}
+
+class Bonus extends Entity {
+    constructor(scene, x, y, texture) {
+        super(scene, x, y, texture, "Bonus");
+        this.body.velocity.y = Phaser.Math.Between(40,500);
+    }
+
+    update() {
+        this.body.setVelocity(0,0);
+        this.x = Phaser.Math.Clamp(this.x, this.displayWidth/2, this.scene.game.config.width-this.width/2);
+
     }
 }
