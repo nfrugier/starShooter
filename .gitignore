@@ -1,0 +1,7 @@
+# JetBrains files
+.idea
+
+# copyrighted assets
+assets/sounds
+assets/images/enemies
+assets/images/player
