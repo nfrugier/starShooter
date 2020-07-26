@@ -3,4 +3,8 @@ class Chaser extends Enemy {
         super(scene, x, y, texture, "Chaser");
         this.body.velocity.y = 150;
     }
+
+    setTarget() {
+
+    }
 }

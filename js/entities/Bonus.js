@@ -1,6 +1,6 @@
 class Bonus extends Entity {
     constructor(scene, x, y, texture) {
-        super(scene, x, y, texture, "Bonus");
+        super(scene, x, y, texture);
         this.body.velocity.y = Phaser.Math.Between(40, 500);
     }
 

@@ -5,8 +5,21 @@ class Title extends Phaser.Scene {
 
     preload() {
         this.load.audio('beep', 'assets/sounds/beep.wav');
+        this.load.audio('bonusSFX', 'assets/sounds/bonus.wav');
         this.load.audio('fail', 'assets/sounds/fail.wav');
         this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
+
+        this.load.image('shot', 'assets/images/player/shot.png');
+
+        this.load.image('enemy_1', 'assets/images/enemies/enemy_1.png');
+        this.load.image('enemy_2', 'assets/images/enemies/enemy_2.png');
+        this.load.image('enemy_3', 'assets/images/enemies/enemy_3.png');
+        this.load.image('enemy_shot', 'assets/images/enemies/enemy_shot.png');
+        enemy_sprite = ['enemy_1', 'enemy_2', 'enemy_3']
+
+        this.load.image('bonusShield', 'assets/images/bonuses/shield.png');
+        this.load.image('bonusPower', 'assets/images/bonuses/powerUp.png');
+
         this.load.image('bg', 'assets/images/bg.png');
         this.load.multiatlas(
             'player',
@@ -17,6 +30,7 @@ class Title extends Phaser.Scene {
             'assets/images/shield/shield_atlas.json',
             'assets/images/shield'
         )
+
 
     }
 

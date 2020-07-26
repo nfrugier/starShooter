@@ -1,5 +1,6 @@
 var config, options, game;
-var spawner, enemy_sprite;
+var enemySpawner, enemy_sprite;
+var bonusesSpawner;
 var score = 0;
 var lives = 3;
 var shield = 100;
@@ -24,16 +25,16 @@ window.onload = () => {
                     x: 0,
                     y: 0,
                 },
-                debug: true,
+                debug: false,
             },
         },
         audio: {
             noAudio: false,
         },
         scene: [
-            //Title,
+            Title,
             Main,
-            //GameOver
+            GameOver
         ]
     };
 

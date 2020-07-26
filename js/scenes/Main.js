@@ -4,25 +4,7 @@ class Main extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('shot', 'assets/images/player/shot.png');
-        this.load.image('enemy_1', 'assets/images/enemies/enemy_1.png');
-        this.load.image('enemy_2', 'assets/images/enemies/enemy_2.png');
-        this.load.image('enemy_3', 'assets/images/enemies/enemy_3.png');
-        this.load.image('enemy_shot', 'assets/images/enemies/enemy_shot.png');
-        enemy_sprite = ['enemy_1', 'enemy_2', 'enemy_3']
 
-        this.load.audio('fail', 'assets/sounds/fail.wav');
-        this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
-        this.load.image('bg', 'assets/images/bg.png');
-        this.load.multiatlas(
-            'player',
-            'assets/images/player/player_atlas.json',
-            'assets/images/player');
-        this.load.multiatlas(
-            'shield',
-            'assets/images/shield/shield_atlas.json',
-            'assets/images/shield'
-        )
     }
 
     create() {
@@ -30,6 +12,7 @@ class Main extends Phaser.Scene {
         this.enemies = this.add.group();
         this.playerLasers = this.add.group();
         this.enemiesLasers = this.add.group();
+        this.bonuses = this.add.group();
 
         //UI
         this.bg = this.add.tileSprite(game.config.width / 2, game.config.height / 2, 400, 750, 'bg').setOrigin(0.5).setDepth(1);
@@ -52,6 +35,7 @@ class Main extends Phaser.Scene {
             loop: true
         });
         this.fail = this.sound.add('fail');
+        this.bonusSFX = this.sound.add('bonusSFX');
         this.loop.play();
 
         //player
@@ -89,16 +73,6 @@ class Main extends Phaser.Scene {
             this.playerShip.x,
             this.playerShip.y,
             'shield').setDepth(10).setAlpha(shield / 100).setScale(1.25).setFrame('shield-6');
-        /*this.anims.create({
-            key: 'shield_idle',
-            frames: this.anims.generateFrameNames('shield', {
-                prefix: 'shield-',
-                start: 6,
-                end: 6
-                //don't ask ...
-            }),
-            frameRate: 10,
-        });*/
         this.anims.create({
             key: 'shield_anim',
             frames: this.anims.generateFrameNames('shield', {
@@ -109,9 +83,9 @@ class Main extends Phaser.Scene {
             frameRate: 12,
         });
 
-        //spawner
-
-        spawner = this.time.addEvent({
+        //spawners
+        ////enemies
+        enemySpawner = this.time.addEvent({
             delay: spawntimer,
             callback: () => {
                 var enemy = null;
@@ -138,7 +112,40 @@ class Main extends Phaser.Scene {
             callbackScope: this,
             loop: true,
         });
+        ////bonuses
+        bonusesSpawner = this.time.addEvent({
+            delay: 3000,
+            callback: () => {
+                var bonus = null;
+                var randomiser = Phaser.Math.Between(0,10);
+                if( randomiser >= 8) {
+                    bonus = new Bonus(
+                        this,
+                        Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
+                        0,
+                        'bonusPower'
+                    );
+                    bonus.setData('type', 'power');
+                } else if (randomiser >= 4) {
+                    bonus = new Bonus(
+                        this,
+                        Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
+                        0,
+                        'bonusShield'
+                    );
+                    bonus.setData('type', 'shield');
+                }
+                if (bonus !== null) {
+                    bonus.setDepth(6).setScale(1.2);
+                    console.log(bonus.getData('type'))
+                    this.bonuses.add(bonus);
+                }
+                console.log(randomiser);
 
+            },
+            callbackScope: this,
+            loop: true,
+        });
 
         //colliders
         ////playerLaser=>Enemies
@@ -154,24 +161,11 @@ class Main extends Phaser.Scene {
         });
         ////enemiesLaser=>PlayerShield
         this.physics.add.overlap(this.enemiesLasers, this.playerShield, (enemiesLasers, playerShield) => {
-            if (!playerShield.getData('isDead') &&
+            if (shield > 0 &&
                 playerShield.getData('isHitable')) {
                 this.playerShield.shieldHitCallback(enemiesLasers, playerShield);
                 shield -= 10;
                 enemiesLasers.destroy();
-            }
-        });
-        ////enemies=>playerShield
-        this.physics.add.overlap(this.enemies, this.playerShield, (enemy, playerShield) => {
-            if (!playerShield.getData('isDead') &&
-                playerShield.getData('isHitable')) {
-                shield -= 10;
-                if (enemy) {
-                    if (enemy.onDestroy !== undefined) {
-                        enemy.onDestroy();
-                    }
-                    enemy.explode(true);
-                }
             }
         });
         ////enemiesLaser=>PlayerShip
@@ -187,8 +181,8 @@ class Main extends Phaser.Scene {
         ////enemies=>player
         this.physics.add.overlap(this.enemies, this.playerShip, (enemy, player) => {
             if (!player.getData('isDead') &&
-                player.getData('isHitable') &&
-                shield <= 0) {
+                player.getData('isHitable'))
+            {
                 lives--;
                 this.playerShip.Hit();
                 if (enemy) {
@@ -199,6 +193,30 @@ class Main extends Phaser.Scene {
                 }
             }
         });
+        ////bonuses=>player
+        this.physics.add.overlap(this.bonuses, this.playerShield, (bonus, player) => {
+            if (!player.getData('isDead')) {
+                this.bonusSFX.play();
+                switch (bonus.getData('type')) {
+                    case('shield'):
+                        if (shield <= 150) {
+                            shield += 20;
+                        }
+                        this.playerShield.shieldHitCallback(bonus, player);
+                        bonus.explode(true);
+                        break;
+                    case('power'):
+                        if (lives <= 5) {
+                            lives++;
+                        }
+                        score += 250;
+                        bonus.explode(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        })
         ////playerlaser=>enemylaser
         this.physics.add.overlap(this.playerLasers, this.enemiesLasers, (playerLaser, enemyLaser) => {
             playerLaser.destroy();
@@ -216,8 +234,11 @@ class Main extends Phaser.Scene {
         this.scoretxt.setText('Score : ' + score);
         this.shieldtxt.setText('Shield : ' + shield);
 
+        shield = (shield >= 150) ? 150 : shield;
+        lives = (lives >= 5) ? 5 : lives;
+
         if (shield <= 0) {
-            this.playerShield.explode();
+            // TODO
         }
 
         if (lives > 1) {
@@ -238,27 +259,6 @@ class Main extends Phaser.Scene {
         } else {
             this.lifetxt.setText('Life : ' + lives);
         }
-
-        //events on enemies
-        for (let i = 0; i < this.enemies.getChildren().length; i++) {
-            let enemy = this.enemies.getChildren()[i];
-            enemy.update();
-
-            //frustum culling
-            if (enemy.x < -enemy.displayWidth ||
-                enemy.x > this.game.config.width + enemy.displayWidth ||
-                enemy.y < -enemy.displayHeight * 4 ||
-                enemy.y > this.game.config.height + enemy.displayHeight) {
-
-                if (enemy) {
-                    if (enemy.onDestroy !== undefined) {
-                        enemy.onDestroy();
-                    }
-                    enemy.destroy();
-                }
-            }
-        }
-        this.playerShield.x = this.playerShip.x;
 
         //control the spaceship
         if (this.playerShip !== null) {
@@ -294,20 +294,25 @@ class Main extends Phaser.Scene {
             this.playerShip.body.velocity.x = 0;
         }
 
-        this.cleanLasers(this.playerLasers);
-        this.cleanLasers(this.enemiesLasers)
+        this.cleanEntity(this.playerLasers);
+        this.cleanEntity(this.enemiesLasers);
+        this.cleanEntity(this.enemies);
+        //this.cleanEntity(this.bonuses);
     }
 
-    cleanLasers(entity) {
+    cleanEntity(entity) {
         for (let i = 0; i < entity.getChildren().length; i++) {
-            let laser = entity.getChildren()[i];
-            laser.update();
-            if (laser.x < -laser.displayWidth ||
-                laser.x > this.game.config.width + laser.displayWidth ||
-                laser.y < -laser.displayHeight * 4 ||
-                laser.y > this.game.config.height + laser.displayHeight) {
-                if (laser) {
-                    laser.destroy();
+            let unit = entity.getChildren()[i];
+            unit.update();
+            if (unit.x < -unit.displayWidth ||
+                unit.x > this.game.config.width + unit.displayWidth ||
+                unit.y < -unit.displayHeight * 4 ||
+                unit.y > this.game.config.height + unit.displayHeight) {
+                if (unit) {
+                    if (unit.onDestroy !== undefined) {
+                        unit.onDestroy();
+                    }
+                    unit.destroy();
                 }
             }
         }
