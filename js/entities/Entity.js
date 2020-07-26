@@ -41,18 +41,3 @@ class Entity extends Phaser.GameObjects.Sprite {
 }
 
 
-
-
-
-class EnemyLaser extends Entity {
-    constructor(scene, x, y) {
-        super(scene, x, y, "enemy_shot");
-        this.body.velocity.y = Phaser.Math.Between(500, 750);
-    }
-}
-
-// class Enemy extends Entity {
-//     constructor(scene, x, y, texture){
-//         super(scene, x, y, texture);
-//     }
-// }

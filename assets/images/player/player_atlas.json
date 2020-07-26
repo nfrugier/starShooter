@@ -1,0 +1,272 @@
+{
+	"textures": [
+		{
+			"image": "player_atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 52,
+				"h": 883
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "planes_03A-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 19,
+						"w": 50,
+						"h": 73
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 50,
+						"h": 73
+					}
+				},
+				{
+					"filename": "planes_03A-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 19,
+						"w": 50,
+						"h": 70
+					},
+					"frame": {
+						"x": 1,
+						"y": 76,
+						"w": 50,
+						"h": 70
+					}
+				},
+				{
+					"filename": "planes_03A-3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 19,
+						"w": 50,
+						"h": 71
+					},
+					"frame": {
+						"x": 1,
+						"y": 148,
+						"w": 50,
+						"h": 71
+					}
+				},
+				{
+					"filename": "planes_03A-4",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 23,
+						"y": 19,
+						"w": 50,
+						"h": 72
+					},
+					"frame": {
+						"x": 1,
+						"y": 221,
+						"w": 50,
+						"h": 72
+					}
+				},
+				{
+					"filename": "planes_03A-5",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 73
+					},
+					"frame": {
+						"x": 1,
+						"y": 295,
+						"w": 48,
+						"h": 73
+					}
+				},
+				{
+					"filename": "planes_03A-6",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 69
+					},
+					"frame": {
+						"x": 1,
+						"y": 370,
+						"w": 48,
+						"h": 69
+					}
+				},
+				{
+					"filename": "planes_03A-7",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 71
+					},
+					"frame": {
+						"x": 1,
+						"y": 441,
+						"w": 48,
+						"h": 71
+					}
+				},
+				{
+					"filename": "planes_03A-8",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 72
+					},
+					"frame": {
+						"x": 1,
+						"y": 514,
+						"w": 48,
+						"h": 72
+					}
+				},
+				{
+					"filename": "planes_03A-9",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 73
+					},
+					"frame": {
+						"x": 1,
+						"y": 588,
+						"w": 48,
+						"h": 73
+					}
+				},
+				{
+					"filename": "planes_03A-10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 70
+					},
+					"frame": {
+						"x": 1,
+						"y": 663,
+						"w": 48,
+						"h": 70
+					}
+				},
+				{
+					"filename": "planes_03A-11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 72
+					},
+					"frame": {
+						"x": 1,
+						"y": 735,
+						"w": 48,
+						"h": 72
+					}
+				},
+				{
+					"filename": "planes_03A-12",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 19,
+						"w": 48,
+						"h": 73
+					},
+					"frame": {
+						"x": 1,
+						"y": 809,
+						"w": 48,
+						"h": 73
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:15ffe1662fce7c18c954b3e796f75ee3:362b16e7990eb43de6b5185244e902df:0cfebe7ecaa91f8dfcf0c5841d05f72e$"
+	}
+}

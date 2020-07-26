@@ -1,0 +1,146 @@
+{
+	"textures": [
+		{
+			"image": "shield_atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 588,
+				"h": 98
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "shield-1",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				},
+				{
+					"filename": "shield-2",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 99,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				},
+				{
+					"filename": "shield-3",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 197,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				},
+				{
+					"filename": "shield-4",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 295,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				},
+				{
+					"filename": "shield-5",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 393,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				},
+				{
+					"filename": "shield-6",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 96,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 96,
+						"h": 96
+					},
+					"frame": {
+						"x": 491,
+						"y": 1,
+						"w": 96,
+						"h": 96
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:339cda271d275cca6e5f2f3cd67087ca:8e7a791db283235dadaf1e6a00e7d78d:735a563d1ec584cc6cdbad553c05dfe0$"
+	}
+}

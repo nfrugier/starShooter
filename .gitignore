@@ -2,6 +2,6 @@
 .idea
 
 # copyrighted assets
-assets/sounds
-assets/images/enemies
-assets/images/player
+*.mp3
+*.wav
+assets/images/**/**.png

@@ -4,34 +4,37 @@ var score = 0;
 var lives = 3;
 var shield = 100;
 var spawntimer = 500;
+var speed = 700;
 
 
 window.onload = () => {
-    config ={
-        type : Phaser.CANVAS,
-        scale : {
-            autoCenter : Phaser.Scale.CENTER_BOTH,
-            width : 400,
-            height : 750,
-            parent : 'game',
+    config = {
+        type: Phaser.CANVAS,
+        scale: {
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: 400,
+            height: 750,
+            parent: 'game',
         },
-        background : 0x000000,
-        physics : {
-            default : 'arcade',
-            arcade : {
-                gravity : {
-                    x : 0,
-                    y : 0,
+        background: 0x000000,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: {
+                    x: 0,
+                    y: 0,
                 },
+                debug: true,
             },
         },
-        audio : {
-            noAudio : false,
+        audio: {
+            noAudio: false,
         },
-        scene : [
-            Title,
+        scene: [
+            //Title,
             Main,
-            GameOver]
+            //GameOver
+        ]
     };
 
     game = new Phaser.Game(config);

@@ -10,9 +10,27 @@ class Main extends Phaser.Scene {
         this.load.image('enemy_3', 'assets/images/enemies/enemy_3.png');
         this.load.image('enemy_shot', 'assets/images/enemies/enemy_shot.png');
         enemy_sprite = ['enemy_1', 'enemy_2', 'enemy_3']
+
+        this.load.audio('fail', 'assets/sounds/fail.wav');
+        this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
+        this.load.image('bg', 'assets/images/bg.png');
+        this.load.multiatlas(
+            'player',
+            'assets/images/player/player_atlas.json',
+            'assets/images/player');
+        this.load.multiatlas(
+            'shield',
+            'assets/images/shield/shield_atlas.json',
+            'assets/images/shield'
+        )
     }
 
     create() {
+        //groups
+        this.enemies = this.add.group();
+        this.playerLasers = this.add.group();
+        this.enemiesLasers = this.add.group();
+
         //UI
         this.bg = this.add.tileSprite(game.config.width / 2, game.config.height / 2, 400, 750, 'bg').setOrigin(0.5).setDepth(1);
         this.scoretxt = this.add.text(20, 20, 'Score : ' + score, {
@@ -31,20 +49,68 @@ class Main extends Phaser.Scene {
         //sounds
         this.loop = this.sound.add('theme', {
             volume: 0.5,
-            loop: true});
+            loop: true
+        });
         this.fail = this.sound.add('fail');
         this.loop.play();
 
         //player
-        this.player = new Player(this, game.config.width / 2, game.config.height * 0.9, 'player').setDepth(5);
+        this.playerShip = new PlayerShip(this,
+            game.config.width / 2,
+            game.config.height * 0.9,
+            'player'
+        ).setDepth(5);
+        ////adjusting Hitbox
+        this.playerShip.body.setSize(this.playerShip.width - 40, this.playerShip.height - 40);
         this.cursors = this.input.keyboard.createCursorKeys();
+        ////player's animations
+        this.anims.create({
+            key: 'player_idle',
+            frames: this.anims.generateFrameNames('player', {
+                prefix: 'planes_03A-',
+                start: 1,
+                end: 4
+            }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.create({
+            key: 'player_side',
+            frames: this.anims.generateFrameNames('player', {
+                prefix: 'planes_03A-',
+                start: 5,
+                end: 12
+            }),
+            frameRate: 10,
+        });
 
-        //groups
-        this.enemies = this.add.group();
-        this.playerLasers = this.add.group();
-        this.enemiesLasers = this.add.group();
+        //player's shield
+        this.playerShield = new Shield(this,
+            this.playerShip.x,
+            this.playerShip.y,
+            'shield').setDepth(10).setAlpha(shield / 100).setScale(1.25).setFrame('shield-6');
+        /*this.anims.create({
+            key: 'shield_idle',
+            frames: this.anims.generateFrameNames('shield', {
+                prefix: 'shield-',
+                start: 6,
+                end: 6
+                //don't ask ...
+            }),
+            frameRate: 10,
+        });*/
+        this.anims.create({
+            key: 'shield_anim',
+            frames: this.anims.generateFrameNames('shield', {
+                prefix: 'shield-',
+                start: 1,
+                end: 6,
+            }),
+            frameRate: 12,
+        });
 
         //spawner
+
         spawner = this.time.addEvent({
             delay: spawntimer,
             callback: () => {
@@ -73,6 +139,7 @@ class Main extends Phaser.Scene {
             loop: true,
         });
 
+
         //colliders
         ////playerLaser=>Enemies
         this.physics.add.collider(this.playerLasers, this.enemies, (playerLaser, enemy) => {
@@ -85,19 +152,45 @@ class Main extends Phaser.Scene {
                 score += 50;
             }
         });
-        ////enemiesLaser=>Player
-        this.physics.add.overlap(this.enemiesLasers, this.player, (enemiesLasers, player) => {
-            if (!player.getData('isDead') &&
-                player.getData('isHitable')) {
+        ////enemiesLaser=>PlayerShield
+        this.physics.add.overlap(this.enemiesLasers, this.playerShield, (enemiesLasers, playerShield) => {
+            if (!playerShield.getData('isDead') &&
+                playerShield.getData('isHitable')) {
+                this.playerShield.shieldHitCallback(enemiesLasers, playerShield);
                 shield -= 10;
                 enemiesLasers.destroy();
             }
         });
-        ////enemies=>player
-        this.physics.add.overlap(this.enemies, this.player, (enemy, player) => {
+        ////enemies=>playerShield
+        this.physics.add.overlap(this.enemies, this.playerShield, (enemy, playerShield) => {
+            if (!playerShield.getData('isDead') &&
+                playerShield.getData('isHitable')) {
+                shield -= 10;
+                if (enemy) {
+                    if (enemy.onDestroy !== undefined) {
+                        enemy.onDestroy();
+                    }
+                    enemy.explode(true);
+                }
+            }
+        });
+        ////enemiesLaser=>PlayerShip
+        this.physics.add.overlap(this.enemiesLasers, this.playerShip, (enemiesLasers, player) => {
             if (!player.getData('isDead') &&
-                player.getData('isHitable')) {
-                shield -= 15;
+                player.getData('isHitable') &&
+                shield <= 0) {
+                lives--;
+                this.playerShip.Hit();
+                enemiesLasers.destroy();
+            }
+        });
+        ////enemies=>player
+        this.physics.add.overlap(this.enemies, this.playerShip, (enemy, player) => {
+            if (!player.getData('isDead') &&
+                player.getData('isHitable') &&
+                shield <= 0) {
+                lives--;
+                this.playerShip.Hit();
                 if (enemy) {
                     if (enemy.onDestroy !== undefined) {
                         enemy.onDestroy();
@@ -115,20 +208,23 @@ class Main extends Phaser.Scene {
     }
 
     update() {
+        this.playerShield.x = this.playerShip.x;
+        this.playerShield.y = this.playerShip.y;
+        this.playerShield.setAlpha(shield / 100);
         this.bg.tilePositionY -= 10;
+        //update UI
         this.scoretxt.setText('Score : ' + score);
         this.shieldtxt.setText('Shield : ' + shield);
 
         if (shield <= 0) {
-            this.player.Hit();
-            --lives;
-            shield = 100;
+            this.playerShield.explode();
         }
 
         if (lives > 1) {
             this.lifetxt.setText('Lives : ' + lives);
         } else if (lives <= 0) {
             this.loop.stop();
+            this.playerShip.explode();
             this.scene.pause('Main')
             this.youLose = this.add.text(game.config.width / 2, game.config.height / 2, 'YOU LOSE', {
                 color: 'yellow',
@@ -162,32 +258,40 @@ class Main extends Phaser.Scene {
                 }
             }
         }
+        this.playerShield.x = this.playerShip.x;
 
         //control the spaceship
-        if (this.player !== null) {
-            this.player.update();
+        if (this.playerShip !== null) {
+            this.playerShip.update();
+            this.playerShip.play('player_idle', true);
             //moving
             if (this.cursors.right.isDown) {
-                this.player.moveRight();
+                this.playerShip.moveRight();
+                this.playerShip.setFlipX(true);
+                this.playerShip.play('player_side', true);
             } else if (this.cursors.left.isDown) {
-                this.player.moveLeft();
+                this.playerShip.moveLeft();
+                this.playerShip.setFlipX(false);
+                this.playerShip.play('player_side', true);
             }
 
             if (this.cursors.up.isDown) {
-                this.player.moveUp();
+                this.playerShip.moveUp();
+                this.playerShip.play('player_idle', true);
             } else if (this.cursors.down.isDown) {
-                this.player.moveDown();
+                this.playerShip.moveDown();
+                this.playerShip.play('player_idle', true);
             }
 
             //shooting
             if (this.cursors.space.isDown) {
-                this.player.setData('isShooting', true);
+                this.playerShip.setData('isShooting', true);
             } else {
-                this.player.setData('timerShootTick', this.player.getData('timerShootDelay') - 0.1);
-                this.player.setData('isShooting', false);
+                this.playerShip.setData('timerShootTick', this.playerShip.getData('timerShootDelay') - 0.1);
+                this.playerShip.setData('isShooting', false);
             }
         } else {
-            this.player.body.velocity.x = 0;
+            this.playerShip.body.velocity.x = 0;
         }
 
         this.cleanLasers(this.playerLasers);

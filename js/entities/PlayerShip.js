@@ -1,27 +1,11 @@
-class Player extends Entity {
+class PlayerShip extends Entity {
     constructor(scene, x, y, texture) {
-        super(scene, x, y, texture, "Player");
+        super(scene, x, y, texture, "PlayerShip");
         this.setData('speed', 700);
         this.setData('isShooting', false);
         this.setData('timerShootDelay', 10);
         this.setData('timerShootTick', this.getData('timeShootDelay') - 1);
         this.setData('isHitable', true);
-    }
-
-    moveLeft() {
-        this.body.velocity.x = -this.getData('speed');
-    }
-
-    moveRight() {
-        this.body.velocity.x = this.getData('speed')
-    }
-
-    moveUp() {
-        this.body.velocity.y = -this.getData('speed');
-    }
-
-    moveDown() {
-        this.body.velocity.y = this.getData('speed');
     }
 
     onDestroy() {
@@ -49,6 +33,21 @@ class Player extends Entity {
                 onCompleteScope: this,
             });
         }
+    }
+    moveLeft() {
+        this.body.velocity.x = -speed;
+    }
+
+    moveRight() {
+        this.body.velocity.x = speed;
+    }
+
+    moveUp() {
+        this.body.velocity.y = -speed;
+    }
+
+    moveDown() {
+        this.body.velocity.y = speed;
     }
 
     update() {

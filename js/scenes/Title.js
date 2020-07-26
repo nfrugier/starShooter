@@ -5,10 +5,18 @@ class Title extends Phaser.Scene {
 
     preload() {
         this.load.audio('beep', 'assets/sounds/beep.wav');
-        this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
         this.load.audio('fail', 'assets/sounds/fail.wav');
+        this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
         this.load.image('bg', 'assets/images/bg.png');
-        this.load.image('player', 'assets/images/player/player.png');
+        this.load.multiatlas(
+            'player',
+            'assets/images/player/player_atlas.json',
+            'assets/images/player');
+        this.load.multiatlas(
+            'shield',
+            'assets/images/shield/shield_atlas.json',
+            'assets/images/shield'
+        )
 
     }
 
