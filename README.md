@@ -1,11 +1,14 @@
 # starShooter
 
+The game is playable [here](https://thrandal.itch.io/starshooter)
+
 ### Requirements
 
 * a web browser
 * to run locally, a webserver or a simple php server is better (to bypass CORS policies on Chrome, i.e)
+* some assets since I don't upload them*
 
-### About the assets
+### *About the assets
 
 For legal reasons I don't push the copyrighted assets files on git even though I own all the files 
 and have all rights to use them (I don't I have the rights to share them). You can replace them by your own assets 
