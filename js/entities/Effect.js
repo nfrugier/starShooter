@@ -1,4 +1,4 @@
-class Explosion extends Entity{
+class Effect extends Entity{
     constructor(scene, x, y, texture) {
         super(scene, x, y, texture);
         this.scene = scene;

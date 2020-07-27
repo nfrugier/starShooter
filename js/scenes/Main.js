@@ -29,6 +29,9 @@ class Main extends Phaser.Scene {
             fontFamily: 'Helvetica'
         }).setOrigin(0).setDepth(20);
 
+        //controllers
+        keyboard = (!isMobile) ? this.input.keyboard.createCursorKeys() : null;
+        pointer = (isMobile) ? this.input.activePointer : null;
 
         //sounds
         this.loop = this.sound.add('theme', {
@@ -48,7 +51,6 @@ class Main extends Phaser.Scene {
         ).setDepth(5);
         ////adjusting Hitbox
         this.playerShip.body.setSize(this.playerShip.width - 40, this.playerShip.height - 40);
-        this.cursors = this.input.keyboard.createCursorKeys();
         ////player's animations
         this.anims.create({
             key: 'player_idle',
@@ -87,12 +89,12 @@ class Main extends Phaser.Scene {
 
         //enemies' animation
         this.anims.create({
-           key: 'kaboom',
-           frames: this.anims.generateFrameNames('explosion',{
-               prefix: 'explosion-',
-               start: 1,
-               end: 11
-               }),
+            key: 'kaboom',
+            frames: this.anims.generateFrameNames('explosion', {
+                prefix: 'explosion-',
+                start: 1,
+                end: 11
+            }),
             frameRate: 16
         });
 
@@ -131,8 +133,8 @@ class Main extends Phaser.Scene {
             delay: 3000,
             callback: () => {
                 var bonus = null;
-                var randomiser = Phaser.Math.Between(0,10);
-                if( randomiser >= 8) {
+                var randomiser = Phaser.Math.Between(0, 10);
+                if (randomiser >= 8) {
                     bonus = new Bonus(
                         this,
                         Phaser.Math.Between(game.config.width * 0.05, game.config.width * 0.95),
@@ -166,7 +168,7 @@ class Main extends Phaser.Scene {
                 if (enemy.onDestroy !== undefined) {
                     enemy.onDestroy();
                 }
-                var explosion = new Explosion(this ,enemy.x, enemy.y, 'explosion').setVisible(true).setDepth(50);
+                var explosion = new Effect(this, enemy.x, enemy.y, 'explosion').setVisible(true).setDepth(50);
                 explosion.play('kaboom');
                 explosion.once('animationcomplete', () => {
                     explosion.destroy();
@@ -198,8 +200,7 @@ class Main extends Phaser.Scene {
         ////enemies=>player
         this.physics.add.overlap(this.enemies, this.playerShip, (enemy, player) => {
             if (!player.getData('isDead') &&
-                player.getData('isHitable'))
-            {
+                player.getData('isHitable')) {
                 lives--;
                 this.playerShip.Hit();
                 if (enemy) {
@@ -277,30 +278,61 @@ class Main extends Phaser.Scene {
             this.playerShip.update();
             this.playerShip.play('player_idle', true);
             //moving
-            if (this.cursors.right.isDown) {
-                this.playerShip.moveRight();
-                this.playerShip.setFlipX(true);
-                this.playerShip.play('player_side', true);
-            } else if (this.cursors.left.isDown) {
-                this.playerShip.moveLeft();
-                this.playerShip.setFlipX(false);
-                this.playerShip.play('player_side', true);
-            }
+            if (!isMobile) {
+                if (keyboard.right.isDown) {
+                    this.playerShip.moveRight();
+                    this.playerShip.setFlipX(true);
+                    this.playerShip.play('player_side', true);
+                } else if (keyboard.left.isDown) {
+                    this.playerShip.moveLeft();
+                    this.playerShip.setFlipX(false);
+                    this.playerShip.play('player_side', true);
+                }
 
-            if (this.cursors.up.isDown) {
-                this.playerShip.moveUp();
-                this.playerShip.play('player_idle', true);
-            } else if (this.cursors.down.isDown) {
-                this.playerShip.moveDown();
-                this.playerShip.play('player_idle', true);
-            }
+                if (keyboard.up.isDown) {
+                    this.playerShip.moveUp();
+                    this.playerShip.play('player_idle', true);
+                } else if (keyboard.down.isDown) {
+                    this.playerShip.moveDown();
+                    this.playerShip.play('player_idle', true);
+                }
 
-            //shooting
-            if (this.cursors.space.isDown) {
-                this.playerShip.setData('isShooting', true);
+                //shooting
+                if (keyboard.space.isDown) {
+                    this.playerShip.setData('isShooting', true);
+                } else {
+                    this.playerShip.setData('timerShootTick', this.playerShip.getData('timerShootDelay') - 0.1);
+                    this.playerShip.setData('isShooting', false);
+                }
             } else {
-                this.playerShip.setData('timerShootTick', this.playerShip.getData('timerShootDelay') - 0.1);
-                this.playerShip.setData('isShooting', false);
+                if (pointer.isDown) {
+                    var touchX = pointer.x;
+                    var touchY = pointer.y;
+                    this.playerShip.setData('isShooting', true);
+
+                    //movements
+                    if (touchX > this.playerShip.x + 20) {
+                        this.playerShip.moveRight();
+                        this.playerShip.setFlipX(true);
+                        this.playerShip.play('player_side', true);
+                    } else if (touchX < this.playerShip.x - 20) {
+                        this.playerShip.moveLeft();
+                        this.playerShip.setFlipX(false);
+                        this.playerShip.play('player_side', true);
+                    }
+
+                    if (touchY > this.playerShip.y + 20) {
+                        this.playerShip.moveDown();
+                        this.playerShip.play('player_idle', true);
+                    } else if (touchY < this.playerShip.y - 20) {
+                        this.playerShip.moveUp();
+                        this.playerShip.play('player_idle', true);
+                    }
+
+                } else {
+                    this.playerShip.setData('timerShootTick', this.playerShip.getData('timerShootDelay') - 0.1);
+                    this.playerShip.setData('isShooting', false);
+                }
             }
         } else {
             this.playerShip.body.velocity.x = 0;
