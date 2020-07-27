@@ -60,8 +60,9 @@ class PlayerShip extends Entity {
             if (this.getData('timerShootTick') < this.getData('timerShootDelay')) {
                 this.setData('timerShootTick', this.getData('timerShootTick') + 1);
             } else {
-                let playerLaser = new PlayerLaser(this.scene, this.x, this.y - this.height / 2).setDepth(4).setAngle(-90);
+                let playerLaser = new PlayerLaser(this.scene, this.x, this.y - this.height / 2).setDepth(4);
                 this.scene.playerLasers.add(playerLaser);
+                this.scene.pew.play();
                 this.setData('timerShootTick', 0);
             }
         }

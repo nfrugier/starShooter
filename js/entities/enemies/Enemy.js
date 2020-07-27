@@ -1,6 +1,7 @@
 class Enemy extends Entity {
     constructor(scene, x, y, texture) {
         super(scene, x, y, texture);
+        this.setData('isHitable', true);
     }
 }
 

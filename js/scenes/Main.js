@@ -29,12 +29,14 @@ class Main extends Phaser.Scene {
             fontFamily: 'Helvetica'
         }).setOrigin(0).setDepth(20);
 
+
         //sounds
         this.loop = this.sound.add('theme', {
             volume: 0.5,
             loop: true
         });
         this.fail = this.sound.add('fail');
+        this.pew = this.sound.add('playerShot');
         this.bonusSFX = this.sound.add('bonusSFX');
         this.loop.play();
 
@@ -83,12 +85,24 @@ class Main extends Phaser.Scene {
             frameRate: 12,
         });
 
+        //enemies' animation
+        this.anims.create({
+           key: 'kaboom',
+           frames: this.anims.generateFrameNames('explosion',{
+               prefix: 'explosion-',
+               start: 1,
+               end: 11
+               }),
+            frameRate: 16
+        });
+
         //spawners
         ////enemies
         enemySpawner = this.time.addEvent({
             delay: spawntimer,
             callback: () => {
                 var enemy = null;
+
                 if (Phaser.Math.Between(0, 10) >= 3) {
                     enemy = new GunShip(
                         this,
@@ -137,10 +151,8 @@ class Main extends Phaser.Scene {
                 }
                 if (bonus !== null) {
                     bonus.setDepth(6).setScale(1.2);
-                    console.log(bonus.getData('type'))
                     this.bonuses.add(bonus);
                 }
-                console.log(randomiser);
 
             },
             callbackScope: this,
@@ -154,6 +166,11 @@ class Main extends Phaser.Scene {
                 if (enemy.onDestroy !== undefined) {
                     enemy.onDestroy();
                 }
+                var explosion = new Explosion(this ,enemy.x, enemy.y, 'explosion').setVisible(true).setDepth(50);
+                explosion.play('kaboom');
+                explosion.once('animationcomplete', () => {
+                    explosion.destroy();
+                })
                 enemy.explode(true);
                 playerLaser.destroy();
                 score += 50;
@@ -216,11 +233,6 @@ class Main extends Phaser.Scene {
                         break;
                 }
             }
-        })
-        ////playerlaser=>enemylaser
-        this.physics.add.overlap(this.playerLasers, this.enemiesLasers, (playerLaser, enemyLaser) => {
-            playerLaser.destroy();
-            enemyLaser.destroy();
         })
 
     }
@@ -297,7 +309,6 @@ class Main extends Phaser.Scene {
         this.cleanEntity(this.playerLasers);
         this.cleanEntity(this.enemiesLasers);
         this.cleanEntity(this.enemies);
-        //this.cleanEntity(this.bonuses);
     }
 
     cleanEntity(entity) {

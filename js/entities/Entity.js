@@ -18,7 +18,6 @@ class Entity extends Phaser.GameObjects.Sprite {
 
     explode(canDestroy) {
         if (!this.getData('isDead')) {
-            //kaboom here => TODO
 
             if (this.shootTimer !== undefined) {
                 if (this.shootTimer) {
@@ -30,6 +29,9 @@ class Entity extends Phaser.GameObjects.Sprite {
             this.body.setVelocity(0, 0);
 
             if (canDestroy) {
+                if( this.getData('type') === 'Chaser' ||
+                    this.getData('type') === 'GunShip') {
+                }
                 this.destroy();
             } else {
                 this.setVisible(false);

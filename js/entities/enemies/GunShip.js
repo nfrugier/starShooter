@@ -1,7 +1,8 @@
 class GunShip extends Enemy {
     constructor(scene, x, y, texture) {
-        super(scene, x, y, texture, "GunShip");
+        super(scene, x, y, texture);
         this.body.velocity.y = 300;
+        this.setData('type', 'GunShip');
 
 
         switch (true) {

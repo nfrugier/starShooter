@@ -1,0 +1,251 @@
+{
+	"textures": [
+		{
+			"image": "explosion_atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 255,
+				"h": 220
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "explosion-1",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 33,
+						"y": 31,
+						"w": 34,
+						"h": 34
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 34,
+						"h": 34
+					}
+				},
+				{
+					"filename": "explosion-2",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 29,
+						"y": 28,
+						"w": 42,
+						"h": 42
+					},
+					"frame": {
+						"x": 37,
+						"y": 1,
+						"w": 42,
+						"h": 42
+					}
+				},
+				{
+					"filename": "explosion-3",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 26,
+						"y": 26,
+						"w": 48,
+						"h": 47
+					},
+					"frame": {
+						"x": 81,
+						"y": 1,
+						"w": 48,
+						"h": 47
+					}
+				},
+				{
+					"filename": "explosion-4",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 21,
+						"y": 21,
+						"w": 58,
+						"h": 56
+					},
+					"frame": {
+						"x": 131,
+						"y": 1,
+						"w": 58,
+						"h": 56
+					}
+				},
+				{
+					"filename": "explosion-5",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 18,
+						"y": 20,
+						"w": 63,
+						"h": 61
+					},
+					"frame": {
+						"x": 191,
+						"y": 1,
+						"w": 63,
+						"h": 61
+					}
+				},
+				{
+					"filename": "explosion-6",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 14,
+						"y": 15,
+						"w": 71,
+						"h": 68
+					},
+					"frame": {
+						"x": 1,
+						"y": 64,
+						"w": 71,
+						"h": 68
+					}
+				},
+				{
+					"filename": "explosion-7",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 11,
+						"w": 77,
+						"h": 71
+					},
+					"frame": {
+						"x": 74,
+						"y": 64,
+						"w": 77,
+						"h": 71
+					}
+				},
+				{
+					"filename": "explosion-8",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 13,
+						"y": 10,
+						"w": 79,
+						"h": 75
+					},
+					"frame": {
+						"x": 153,
+						"y": 64,
+						"w": 79,
+						"h": 75
+					}
+				},
+				{
+					"filename": "explosion-9",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 10,
+						"w": 81,
+						"h": 73
+					},
+					"frame": {
+						"x": 1,
+						"y": 141,
+						"w": 81,
+						"h": 73
+					}
+				},
+				{
+					"filename": "explosion-10",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 7,
+						"w": 82,
+						"h": 78
+					},
+					"frame": {
+						"x": 84,
+						"y": 141,
+						"w": 82,
+						"h": 78
+					}
+				},
+				{
+					"filename": "explosion-11",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 100,
+						"h": 100
+					},
+					"spriteSourceSize": {
+						"x": 17,
+						"y": 13,
+						"w": 69,
+						"h": 75
+					},
+					"frame": {
+						"x": 168,
+						"y": 141,
+						"w": 69,
+						"h": 75
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:0c6820ec8dc61bc21f3fcdcd217e856d:f25a24e7e9e2cb0357a66d4415dd3b7d:317e539b9cbdbe91d1805cd2aba9f61e$"
+	}
+}

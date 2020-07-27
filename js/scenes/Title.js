@@ -7,6 +7,7 @@ class Title extends Phaser.Scene {
         this.load.audio('beep', 'assets/sounds/beep.wav');
         this.load.audio('bonusSFX', 'assets/sounds/bonus.wav');
         this.load.audio('fail', 'assets/sounds/fail.wav');
+        this.load.audio('playerShot', 'assets/sounds/player_shot.wav');
         this.load.audio('theme', 'assets/sounds/starshooter_main.mp3');
 
         this.load.image('shot', 'assets/images/player/shot.png');
@@ -29,7 +30,12 @@ class Title extends Phaser.Scene {
             'shield',
             'assets/images/shield/shield_atlas.json',
             'assets/images/shield'
-        )
+        );
+        this.load.multiatlas(
+            'explosion',
+            'assets/images/enemies/explosion_atlas.json',
+            'assets/images/enemies/'
+        );
 
 
     }
