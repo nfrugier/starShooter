@@ -11,7 +11,7 @@ The game is playable [here](https://thrandal.itch.io/starshooter)
 ### *About the assets
 
 For legal reasons I don't push the copyrighted assets files on git even though I own all the files 
-and have all rights to use them (I don't I have the rights to share them). You can replace them by your own assets 
+and have all rights to use them (I don't have the rights to share them). You can replace them by your own assets 
 (don't forget to rename them or to change the paths).
 
 However, `starshooter_main.mp3` is available for free on my [SoundCloud Page](https://soundcloud.com/thrandal/starshooter-main) since I made it myself.
